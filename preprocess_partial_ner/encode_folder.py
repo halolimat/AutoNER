@@ -109,8 +109,10 @@ def read_corpus(lines):
     for line in lines:
         if not (line.isspace() or (len(line) > 10 and line[0:10] == '-DOCSTART-')):
             line = line.rstrip('\n').split()
-
-            assert len(line) == 3, "the format of corpus"
+            
+            # # Commented the line
+            # assert len(line) == 3, "the format of corpus" 
+            
             # The format should be
             # 0. Token
             # 1. I/O (I means Break, O means Connected)

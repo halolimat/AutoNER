@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     gpu_index = pw.auto_device() if 'auto' == args.gpu else int(args.gpu)
     device = torch.device("cuda:" + str(gpu_index) if gpu_index >= 0 else "cpu")
-    
+    # device = "cpu"
     logger.info('loading dataset')
     key_list = ['emb_array', 'w_map', 'c_map', 'tl_map', 'cl_map', 'range', 'test_data', 'dev_data']
     dataset = pickle.load(open(args.eval_dataset, 'rb'))
@@ -121,7 +121,10 @@ if __name__ == "__main__":
 
             logger.info('############')
             logger.info('Epoch: {}'.format(indexs))
-            pw.nvidia_memory_map(gpu_index = gpu_index)
+            print('\nEpoch: {0}/{1} ...'.format(indexs, args.epoch))
+            
+            # # Comment the line for 'cpu'
+            # pw.nvidia_memory_map(gpu_index = gpu_index)
 
             ner_model.train()
 
@@ -167,6 +170,7 @@ if __name__ == "__main__":
                                                     'per_{}_pre'.format(entity_type): best_type2pre[entity_type],
                                                     'per_{}_rec'.format(entity_type): best_type2rec[entity_type]}, batch_index, use_logger = False)
                             logger.info('\ttype: %s, f1: %.6f, pre: %.6f, rec: %.6f' % (entity_type, best_type2f1[entity_type], best_type2pre[entity_type], best_type2rec[entity_type]))
+                            print('\ntype: %s, pre: %.6f, rec: %.6f, f1: %.6f, ' % (entity_type, best_type2pre[entity_type], best_type2rec[entity_type], best_type2f1[entity_type]))
 
                     else:
                         patience += 1
@@ -201,7 +205,10 @@ if __name__ == "__main__":
                                         'per_%s_pre'.format(entity_type): best_type2pre[entity_type],
                                         'per_%s_rec'.format(entity_type): best_type2rec[entity_type]}, batch_index, use_logger = False)
                 logger.info('\ttype: %s, f1: %.6f, pre: %.6f, rec: %.6f' % (entity_type, best_type2f1[entity_type], best_type2pre[entity_type], best_type2rec[entity_type]))
+                print('\ntype: %s, pre: %.6f, rec: %.6f, f1: %.6f' % (entity_type, best_type2pre[entity_type], best_type2rec[entity_type], best_type2f1[entity_type]))
 
     print ('\nbest dev f1: %.6f, corresponding test f1: %.6f' % (best_eval, best_f1))
-
+    for entity_type in best_type2f1:
+        print('\ntype: %s, pre: %.6f, rec: %.6f, f1: %.6f, ' % (entity_type, best_type2pre[entity_type], best_type2rec[entity_type], best_type2f1[entity_type]))
+    print('\nEnd...')
     pw.close()
