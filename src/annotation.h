@@ -2,7 +2,6 @@
 #define __ANNOTATION_H__
 
 #include "utils.h"
-
 namespace Annotation
 {
 

@@ -211,4 +211,5 @@ if __name__ == "__main__":
     for entity_type in best_type2f1:
         print('\ntype: %s, pre: %.6f, rec: %.6f, f1: %.6f, ' % (entity_type, best_type2pre[entity_type], best_type2rec[entity_type], best_type2f1[entity_type]))
     print('\nEnd...')
+    print('..............................................................................................\n')
     pw.close()
